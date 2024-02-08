@@ -17,3 +17,8 @@ UNIT TESTING
 
 Core unit test for endpoint is BookStoreServiceEndpointIntegrationTest.
 
+NOTE: H2 Database is external and in-memory. Entity tables are created on application first run.
+      Changelog updates tables on every application restart ever for changes are made.
+
+Observation: I had MockMVC deserilization issues for entity classes with entity relationship.
+
