@@ -1,0 +1,44 @@
+
+### ENV
+user_home: ${user.home}
+### SPRING
+server:
+  http2:
+    enabled: true
+  port: 8681
+  http:
+    port: 8682
+  servlet:
+    contextPath: /
+spring:
+  mvc:
+    static-path-pattern: /**
+  devtools:
+    add-properties: true
+  profiles:
+    active: default,swaggerui
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:h2:~/OBSMS
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+management:
+  security:
+    enabled: true
+  port: 18681
+logging:
+  level:
+    web: DEBUG
+config:
+  drone:
+    url_context_path: localhost
+    secure: false
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
