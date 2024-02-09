@@ -28,7 +28,7 @@ import java.util.Date;
 public class LendingRequestLineItem extends AbstractAddonAuditable {
 
     @JoinColumn(name = "book", referencedColumnName = "id", nullable = false, insertable = true, updatable = true)
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonProperty("book")
     private Book book;
     @JsonBackReference
