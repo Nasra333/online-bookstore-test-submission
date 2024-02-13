@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.obsms.test.api.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -10,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.obsms.test.api.commons.abs.data.AbstractActiveAuditable;
 import com.obsms.test.api.commons.data.entities.RepositoryAuditUser;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -24,8 +17,6 @@ import java.util.Date;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "book", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name"})})
@@ -62,46 +53,78 @@ public class Book extends AbstractActiveAuditable {
     @Type(type = "org.hibernate.type.BooleanType")
     @JsonProperty("available")
     private boolean available = Boolean.TRUE;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "category_name", nullable = false)
+    private String categoryName;
     @JoinColumn(name = "book_category", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonBackReference
-    @JsonProperty("book_category")
     private BookCategory bookCategory;
 
     public Book() {
     }
 
-    public Book(String name, String author, String detail, boolean available,
+    public Book(String name, String author, String detail, String categoryName, boolean available,
                 BookCategory bookCategory, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
         this.name = name;
         this.author = author;
         this.detail = detail;
+        this.categoryName = categoryName;
         this.available = available;
         this.bookCategory = bookCategory;
         this.createdBy = createdBy;
         this.lastModifiedBy = modifiedBy;
     }
 
-    public Book(String name, String author, String detail, boolean available,
-                BookCategory bookCategory, String id, Long version, Date createdDate,
-                Date lastModifiedDate, boolean active, boolean newEntity, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
-        this.author = author;
-        this.detail = detail;
-        this.available = available;
-        this.bookCategory = bookCategory;
-        this.id = id;
-        this.version = version;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.createdBy = createdBy;
-        this.lastModifiedBy = modifiedBy;
-        this.active = active;
-        this.newEntity = newEntity;
     }
 
+    public String getAuthor() {
+        return author;
+    }
 
-    @JsonProperty("book_category")
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public BookCategory getBookCategory() {
         return bookCategory;
     }
@@ -114,8 +137,10 @@ public class Book extends AbstractActiveAuditable {
     public String toString() {
         return "Book{" +
                 "name='" + name + '\'' +
+                ", author='" + author + '\'' +
                 ", detail='" + detail + '\'' +
-                ", image='" + image + '\'' +
+                ", available=" + available +
+                ", id='" + id + '\'' +
                 '}';
     }
 }

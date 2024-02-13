@@ -13,12 +13,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "repository_audit_user")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class RepositoryAuditUser extends AbstractAddonPersistable {
+public class RepositoryAuditUser extends AbstractAddonPersistable {
 
     public RepositoryAuditUser() {
     }
@@ -48,4 +47,20 @@ public final class RepositoryAuditUser extends AbstractAddonPersistable {
     @Column(name = "auditor_name")
     @JsonProperty("auditor_name")
     private String auditorName;
+
+    public String getAuditorType() {
+        return auditorType;
+    }
+
+    public void setAuditorType(String auditorType) {
+        this.auditorType = auditorType;
+    }
+
+    public String getAuditorName() {
+        return auditorName;
+    }
+
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
+    }
 }

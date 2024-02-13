@@ -23,8 +23,6 @@ import java.util.Date;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "lending_record")
 @XmlRootElement
@@ -44,8 +42,7 @@ public class LendingRecord extends AbstractActiveAuditable {
     private boolean returned = Boolean.FALSE;
     @JsonBackReference
     @JoinColumn(name = "lending_request", referencedColumnName = "id", nullable = false)
-    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JsonProperty("lending_request")
+    @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private LendingRequest lendingRequest;
 
     public LendingRecord() {
@@ -57,19 +54,28 @@ public class LendingRecord extends AbstractActiveAuditable {
         this.lendingRequest = lendingRequest;
     }
 
-    public LendingRecord(Date returnDate, boolean returned, LendingRequest lendingRequest, String id, Long version,
-                         Date createdDate, Date lastModifiedDate, boolean active, boolean newEntity, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
+    public Date getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public boolean isReturned() {
+        return returned;
+    }
+
+    public void setReturned(boolean returned) {
         this.returned = returned;
+    }
+
+    public LendingRequest getLendingRequest() {
+        return lendingRequest;
+    }
+
+    public void setLendingRequest(LendingRequest lendingRequest) {
         this.lendingRequest = lendingRequest;
-        this.id = id;
-        this.version = version;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.createdBy = createdBy;
-        this.lastModifiedBy = modifiedBy;
-        this.active = active;
-        this.newEntity = newEntity;
     }
 
     @Override

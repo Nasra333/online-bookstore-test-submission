@@ -16,8 +16,6 @@ import javax.persistence.*;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "app_setting", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"app_key"}),
@@ -49,6 +47,30 @@ public class AppSetting extends AbstractAddonAuditable {
     public AppSetting(String appKey, String appValue, boolean cachingEnabled) {
         this.appKey = appKey;
         this.appValue = appValue;
+        this.cachingEnabled = cachingEnabled;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public String getAppValue() {
+        return appValue;
+    }
+
+    public void setAppValue(String appValue) {
+        this.appValue = appValue;
+    }
+
+    public boolean isCachingEnabled() {
+        return cachingEnabled;
+    }
+
+    public void setCachingEnabled(boolean cachingEnabled) {
         this.cachingEnabled = cachingEnabled;
     }
 

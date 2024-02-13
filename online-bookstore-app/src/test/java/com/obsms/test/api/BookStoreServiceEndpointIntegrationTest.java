@@ -60,7 +60,36 @@ public class BookStoreServiceEndpointIntegrationTest {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
 
         mvc.perform(post("/api/v1/addUser")
-                        .content(convert2JsonString(new Users("ikram", "ikram", "Ikram Samaad", auditUser, auditUser)))
+                        .content(convert2JsonString(new Users("ope", "ope", "Ope Samaad", auditUser, auditUser)))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpectAll(status().isOk(), content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void test_add_user_with_history_thenStatus200()
+            throws Exception {
+        RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
+
+        Users users = new Users("lommi", "lommi", "Lommi Samaad", auditUser, auditUser);
+        users.setBrowseHistory(new UserBrowseHistory("Health:[]", users, auditUser, auditUser));
+
+        mvc.perform(post("/api/v1/addUser")
+                        .content(convert2JsonString(users))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpectAll(status().isOk(), content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void test_edit_user_thenStatus200()
+            throws Exception {
+        RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
+
+        mvc.perform(post("/api/v1/editUser")
+                        .content(convert2JsonString(userService.getByUsername("lommi")))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpectAll(status().isOk(), content()
@@ -85,15 +114,12 @@ public class BookStoreServiceEndpointIntegrationTest {
             throws Exception {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
 
-        List<Book> books = new ArrayList<>();
-        books.add(new Book("Art Of Human Communication", "John Doe", "Art Of Human Communication", true, null, auditUser, auditUser));
-        books.add(new Book("Animal Communication", "John Doe", "Art Of Animal Communication", true, null, auditUser, auditUser));
-
         BookCategory communication = new BookCategory("Communication", auditUser, auditUser);
-        books.forEach(e -> {
-            e.setBookCategory(communication);
-        });
+        List<Book> books = new ArrayList<>();
+        books.add(new Book("Art Of Human Communication", "John Doe", "Art Of Human Communication", "Communication", true, communication, auditUser, auditUser));
+        books.add(new Book("Animal Communication", "John Doe", "Art Of Animal Communication", "Communication", true, communication, auditUser, auditUser));
         communication.setBooks(books);
+
         String converted = convert2JsonString(communication);
         mvc.perform(post("/api/v1/addCategory")
                         .content(convert2JsonString(converted))
@@ -109,7 +135,7 @@ public class BookStoreServiceEndpointIntegrationTest {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
 
         mvc.perform(post("/api/v1/editCategory")
-                        .content(convert2JsonString(new BookCategory("Learning Language", auditUser, auditUser)))
+                        .content(convert2JsonString(new BookCategory("Modern Economics", auditUser, auditUser)))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpectAll(status().isOk(), content()
@@ -180,8 +206,7 @@ public class BookStoreServiceEndpointIntegrationTest {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
         BookCategory bookCategory = bookCategoryService.getCategoryByName("Learning Language");
 
-        Book book = new Book("Korean Language", "Yu Bin", "Learning Korean language", true, null, auditUser, auditUser);
-        book.setBookCategory(bookCategory);
+        Book book = new Book("Korean Language", "Yu Bin", "Learning Korean language","Learning Language", true, bookCategory, auditUser, auditUser);
         String converted = convert2JsonString(book);
         mvc.perform(post("/api/v1/addBook")
                         .content(converted)
@@ -195,10 +220,11 @@ public class BookStoreServiceEndpointIntegrationTest {
     public void test_add_list_of_book_thenStatus200()
             throws Exception {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
+        BookCategory bookCategory = bookCategoryService.getCategoryByName("Learning Language");
 
         List<Book> books = new ArrayList<>();
-        books.add(new Book("Jamaican Creole", "Larry Whitebird", "Learning Jamaican creole", true, new BookCategory("Learning Language", auditUser, auditUser), auditUser, auditUser));
-        books.add(new Book("The lost language of Australia", "Kiki Kuttu", "Australian Aboriginal lost language", true, new BookCategory("Learning Language", auditUser, auditUser), auditUser, auditUser));
+        books.add(new Book("Jamaican Creole", "Larry Whitebird", "Learning Jamaican creole", "Learning Language", true, bookCategory, auditUser, auditUser));
+        books.add(new Book("The lost language of Australia", "Kiki Kuttu", "Australian Aboriginal lost language", "Learning Language", true, bookCategory, auditUser, auditUser));
 
         mvc.perform(post("/api/v1/addBooks")
                         .content(convert2JsonString(books))
@@ -213,10 +239,8 @@ public class BookStoreServiceEndpointIntegrationTest {
             throws Exception {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
 
-        Book book = new Book("Korean Language", "Yu Bin", "Learning Korean language", true, new BookCategory("Learning Language", auditUser, auditUser), auditUser, auditUser);
-
         mvc.perform(post("/api/v1/editBook")
-                        .content(convert2JsonString(book))
+                        .content(convert2JsonString(bookService.getBookByName("Modern Economics")))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpectAll(status().isOk(), content()
@@ -227,11 +251,10 @@ public class BookStoreServiceEndpointIntegrationTest {
     public void test_deactivate_book_thenStatus200()
             throws Exception {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
-
-        Book book = new Book("Korean Language", "Yu Bin", "Learning Korean language", true, new BookCategory("Learning Language", auditUser, auditUser), auditUser, auditUser);
+        Book byName = bookService.getBookByName("Korean Language");
 
         mvc.perform(post("/api/v1/removeBook")
-                        .content(convert2JsonString(book))
+                        .content(convert2JsonString(byName))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpectAll(status().isOk(), content()
@@ -242,11 +265,10 @@ public class BookStoreServiceEndpointIntegrationTest {
     public void test_reactivate_book_thenStatus200()
             throws Exception {
         RepositoryAuditUser auditUser = auditUserService.getSystemAuditUser();
-
-        Book book = new Book("Korean Language", "Yu Bin", "Learning Korean language", true, new BookCategory("Learning Language", auditUser, auditUser), auditUser, auditUser);
+        Book byName = bookService.getBookByName("Korean Language");
 
         mvc.perform(post("/api/v1/activateBook")
-                        .content(convert2JsonString(book))
+                        .content(convert2JsonString(byName))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpectAll(status().isOk(), content()
@@ -292,13 +314,13 @@ public class BookStoreServiceEndpointIntegrationTest {
 
         LendingRequest request = new LendingRequest();
         request.setStatus(RequestStatus.NEW);
-        request.setUser(userService.getByUsername("ikram"));
+        request.setUser(userService.getByUsername("walle"));
         request.setCreatedBy(auditUser);
         request.setLastModifiedBy(auditUser);
 
         List<LendingRequestLineItem> items = new ArrayList<>();
-        items.add(new LendingRequestLineItem(bookService.getBookByName("Art Of Human Communication"), request));
-        items.add(new LendingRequestLineItem(bookService.getBookByName("Animal Communication"), request));
+        items.add(new LendingRequestLineItem(bookService.getBookByName("Living Good"), request, auditUser, auditUser));
+        items.add(new LendingRequestLineItem(bookService.getBookByName("Human Body"), request, auditUser, auditUser));
         request.setRequestLineItems(items);
 
 

@@ -2,11 +2,13 @@ package com.obsms.test.api.commons.abs.data;
 
 import org.springframework.lang.Nullable;
 
+import java.io.Serializable;
+
 /**
  * @param <PK>
  * @author Ikram Samaad.
  */
-public interface Persistable<PK> {
+public interface Persistable<PK> extends Serializable {
 
     /**
      * @return {@link PK}
