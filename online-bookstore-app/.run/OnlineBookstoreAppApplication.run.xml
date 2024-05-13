@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="OnlineBookstoreAppApplication" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.obsms.test.api.OnlineBookstoreAppApplication" />
+    <module name="online-bookstore-app" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
