@@ -19,8 +19,6 @@ import java.util.Date;
  * @author ope
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "lending_request_line_item")
 @XmlRootElement
@@ -34,7 +32,6 @@ public class LendingRequestLineItem extends AbstractAddonAuditable {
     @JsonBackReference
     @JoinColumn(name = "lending_request", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JsonProperty("lending_request")
     private LendingRequest lendingRequest;
 
     /**
@@ -49,28 +46,26 @@ public class LendingRequestLineItem extends AbstractAddonAuditable {
      * @param book
      * @param lendingRequest
      */
-    public LendingRequestLineItem(Book book, LendingRequest lendingRequest) {
+    public LendingRequestLineItem(Book book, LendingRequest lendingRequest, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
         this.book = book;
         this.lendingRequest = lendingRequest;
-    }
-
-    /**
-     * constructor.
-     *
-     * @param book
-     * @param lendingRequest
-     */
-    public LendingRequestLineItem(Book book, LendingRequest lendingRequest, String id, Long version, boolean newEntity, Date createdDate,
-                                  Date lastModifiedDate, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
-        this.book = book;
-        this.lendingRequest = lendingRequest;
-        this.id = id;
-        this.version = version;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
         this.createdBy = createdBy;
         this.lastModifiedBy = modifiedBy;
-        this.newEntity = newEntity;
+    }
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public LendingRequest getLendingRequest() {
+        return lendingRequest;
+    }
+
+    public void setLendingRequest(LendingRequest lendingRequest) {
+        this.lendingRequest = lendingRequest;
     }
 
     @Override

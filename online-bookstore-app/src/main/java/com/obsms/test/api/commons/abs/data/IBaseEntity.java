@@ -1,6 +1,8 @@
 package com.obsms.test.api.commons.abs.data;
 
-interface IBaseEntity<PK> {
+import java.io.Serializable;
+
+interface IBaseEntity<PK> extends Serializable {
 
     Long getVersion();
 

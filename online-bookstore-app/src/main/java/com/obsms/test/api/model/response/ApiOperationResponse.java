@@ -10,7 +10,7 @@ import lombok.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiOperationResponse<T> {
+public class ApiOperationResponse {
 
     @JsonProperty("responseCode")
     private ResponseCodeEnum responseCode = null;
@@ -19,7 +19,7 @@ public class ApiOperationResponse<T> {
     private String responseMessage = null;
 
     @JsonProperty("responsePayload")
-    private T responsePayload = null;
+    private String responsePayload = null;
 
     public enum ResponseCodeEnum {
         SUCCESS, FAILED,

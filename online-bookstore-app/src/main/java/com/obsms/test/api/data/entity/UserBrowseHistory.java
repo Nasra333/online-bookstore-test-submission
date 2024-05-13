@@ -23,8 +23,6 @@ import java.util.Date;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "user_browse_history")
 @XmlRootElement
@@ -39,7 +37,7 @@ public class UserBrowseHistory extends AbstractActiveAuditable {
     @JsonProperty("history")
     private String history;
     @JoinColumn(name = "users", referencedColumnName = "id", nullable = false)
-    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonBackReference
     @JsonProperty("user")
     private Users user;
@@ -47,9 +45,11 @@ public class UserBrowseHistory extends AbstractActiveAuditable {
     public UserBrowseHistory() {
     }
 
-    public UserBrowseHistory(String history, Users user) {
+    public UserBrowseHistory(String history, Users user, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
         this.history = history;
         this.user = user;
+        this.createdBy = createdBy;
+        this.lastModifiedBy = modifiedBy;
     }
 
     public UserBrowseHistory(String history, Users user, String id, Long version, Date createdDate, Date lastModifiedDate,
@@ -64,6 +64,22 @@ public class UserBrowseHistory extends AbstractActiveAuditable {
         this.lastModifiedBy = modifiedBy;
         this.active = active;
         this.newEntity = newEntity;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     @Override

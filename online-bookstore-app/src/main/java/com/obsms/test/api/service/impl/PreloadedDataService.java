@@ -4,9 +4,8 @@ package com.obsms.test.api.service.impl;
 import com.obsms.test.api.commons.abs.data.AbstractPersistable;
 import com.obsms.test.api.commons.data.entities.RepositoryAuditUser;
 import com.obsms.test.api.commons.service.RepositoryAuditUserService;
-import com.obsms.test.api.data.entity.AppSetting;
-import com.obsms.test.api.data.entity.BookCategory;
-import com.obsms.test.api.data.entity.DataChangeLog;
+import com.obsms.test.api.data.entity.*;
+import com.obsms.test.api.service.BookCategoryService;
 import com.obsms.test.api.service.DataChangeLogService;
 import com.obsms.test.api.service.PersistableService;
 import org.hibernate.Session;
@@ -39,6 +38,8 @@ public class PreloadedDataService {
     private RepositoryAuditUserService auditUserService;
     @Autowired
     private PersistableService persistableService;
+    @Autowired
+    private BookCategoryService bookCategoryService;
 
     private Set<DataBaseChangeUpdate> updates = new HashSet<>();
 
@@ -68,7 +69,15 @@ public class PreloadedDataService {
         updates.add(new DataBaseChangeUpdate("1000000010", new BookCategory("Religion", auditUser, auditUser)));
         updates.add(new DataBaseChangeUpdate("1000000011", new BookCategory("Contemporary History", auditUser, auditUser)));
 
+        updates.add(new DataBaseChangeUpdate("1000000012", new Users("walle", "walle", "Ikram Samaad", auditUser, auditUser)));
+        updates.add(new DataBaseChangeUpdate("1000000013", new Users("ikram", "ikram", "Ikram Samaad", auditUser, auditUser)));
 
+        BookCategory category = bookCategoryService.getCategoryByName("Economics");
+        updates.add(new DataBaseChangeUpdate("1000000014", new Book("Modern Economics", "Bob Dylan", "Book on modern economy","Economics", Boolean.TRUE, category, auditUser, auditUser)));
+        updates.add(new DataBaseChangeUpdate("1000000015", new Book("Contemporary Economy", "Bob Dylan", "Book dynamics of contemporary economy","Economics", Boolean.TRUE, category, auditUser, auditUser)));
+        category = bookCategoryService.getCategoryByName("Health");
+        updates.add(new DataBaseChangeUpdate("1000000016", new Book("Living Good", "Karen Doe", "Book on good living","Health", Boolean.TRUE, category, auditUser, auditUser)));
+        updates.add(new DataBaseChangeUpdate("1000000017", new Book("Human Body", "Karen Doe", "Book on human body","Health", Boolean.TRUE, category, auditUser, auditUser)));
 
         /**
          * Add new database change log before comment

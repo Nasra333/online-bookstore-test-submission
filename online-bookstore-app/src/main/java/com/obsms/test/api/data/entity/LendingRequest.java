@@ -26,9 +26,6 @@ import java.util.List;
 /**
  * @author walles
  */
-
-@Getter
-@Setter
 @Entity
 @Table(name = "lending_request", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"tracking_number"})})
@@ -42,7 +39,6 @@ public class LendingRequest extends AbstractActiveAuditable {
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "tracking_number", nullable = false, length = 50)
-    @JsonProperty("tracking_number")
     private String trackingNumber;
     @Basic(optional = false)
     @NotNull
@@ -56,11 +52,9 @@ public class LendingRequest extends AbstractActiveAuditable {
     private Users user;
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "lendingRequest", fetch = FetchType.EAGER)
-    @JsonProperty("record")
     private LendingRecord record;
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lendingRequest", fetch = FetchType.EAGER)
-    @JsonProperty("request_line_items")
     private List<LendingRequestLineItem> requestLineItems;
 
     /**
@@ -76,22 +70,44 @@ public class LendingRequest extends AbstractActiveAuditable {
         this.record = record;
     }
 
-    public LendingRequest(String trackingNumber, RequestStatus status, Users user, LendingRecord record,
-                          List<LendingRequestLineItem> requestLineItems, String id, Long version, Date createdDate,
-                          Date lastModifiedDate, boolean active, boolean newEntity, RepositoryAuditUser createdBy, RepositoryAuditUser modifiedBy) {
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
         this.trackingNumber = trackingNumber;
+    }
+
+    public RequestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RequestStatus status) {
         this.status = status;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
         this.user = user;
+    }
+
+    public LendingRecord getRecord() {
+        return record;
+    }
+
+    public void setRecord(LendingRecord record) {
         this.record = record;
+    }
+
+    public List<LendingRequestLineItem> getRequestLineItems() {
+        return requestLineItems;
+    }
+
+    public void setRequestLineItems(List<LendingRequestLineItem> requestLineItems) {
         this.requestLineItems = requestLineItems;
-        this.id = id;
-        this.version = version;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
-        this.createdBy = createdBy;
-        this.lastModifiedBy = modifiedBy;
-        this.active = active;
-        this.newEntity = newEntity;
     }
 
     @Override

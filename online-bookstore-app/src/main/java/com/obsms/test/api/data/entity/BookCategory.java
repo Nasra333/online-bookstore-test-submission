@@ -1,21 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.obsms.test.api.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.obsms.test.api.commons.abs.data.AbstractActiveAuditable;
 import com.obsms.test.api.commons.data.entities.RepositoryAuditUser;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +18,6 @@ import java.util.List;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "book_category", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name"})})
@@ -40,9 +33,10 @@ public class BookCategory extends AbstractActiveAuditable {
     @Column(name = "name", nullable = false, length = 100)
     @JsonProperty("name")
     private String name;
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "bookCategory", fetch = FetchType.EAGER)
+    @JsonManagedReference
     @JsonProperty("books")
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "bookCategory", fetch = FetchType.EAGER)
-    private List<Book> books;
+    private List<Book> books = new ArrayList<>();
 
     public BookCategory() {
     }
@@ -63,6 +57,22 @@ public class BookCategory extends AbstractActiveAuditable {
         this.lastModifiedBy = modifiedBy;
         this.active = active;
         this.newEntity = newEntity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override

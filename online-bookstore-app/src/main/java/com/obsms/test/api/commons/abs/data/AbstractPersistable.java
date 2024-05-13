@@ -23,6 +23,10 @@ public abstract class AbstractPersistable<PK extends Serializable> implements Pe
     @JsonProperty("id")
     protected String id;
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Version
     @Column(name = "version")
     @JsonProperty("version")

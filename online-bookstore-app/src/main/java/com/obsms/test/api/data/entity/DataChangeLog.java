@@ -21,8 +21,6 @@ import java.util.List;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "data_change_log", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"change_log"})})
@@ -41,6 +39,14 @@ public class DataChangeLog extends AbstractAddonAuditable {
     }
 
     public DataChangeLog(String changeLog) {
+        this.changeLog = changeLog;
+    }
+
+    public String getChangeLog() {
+        return changeLog;
+    }
+
+    public void setChangeLog(String changeLog) {
         this.changeLog = changeLog;
     }
 

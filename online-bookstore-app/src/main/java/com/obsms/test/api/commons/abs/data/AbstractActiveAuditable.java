@@ -9,8 +9,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-@Getter
-@Setter
 @MappedSuperclass
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AbstractActiveAuditable extends AbstractAddonAuditable {
@@ -28,4 +26,12 @@ public class AbstractActiveAuditable extends AbstractAddonAuditable {
     @Type(type = "org.hibernate.type.BooleanType")
     @JsonProperty("active")
     protected boolean active = Boolean.TRUE;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

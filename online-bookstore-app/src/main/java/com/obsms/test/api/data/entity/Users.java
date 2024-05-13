@@ -24,8 +24,6 @@ import java.util.Date;
  * @author walles
  */
 
-@Getter
-@Setter
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"username"})})
@@ -53,9 +51,8 @@ public class Users extends AbstractActiveAuditable {
     @Column(name = "fullname", nullable = false, length = 150)
     @JsonProperty("fullname")
     private String fullname;
+    @OneToOne(cascade = {CascadeType.ALL}, mappedBy = "user", fetch = FetchType.EAGER)
     @JsonManagedReference
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonProperty("browse_history")
     private UserBrowseHistory browseHistory;
 
     public Users() {
@@ -83,6 +80,38 @@ public class Users extends AbstractActiveAuditable {
         this.lastModifiedBy = modifiedBy;
         this.active = active;
         this.newEntity = newEntity;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public UserBrowseHistory getBrowseHistory() {
+        return browseHistory;
+    }
+
+    public void setBrowseHistory(UserBrowseHistory browseHistory) {
+        this.browseHistory = browseHistory;
     }
 
     @Override

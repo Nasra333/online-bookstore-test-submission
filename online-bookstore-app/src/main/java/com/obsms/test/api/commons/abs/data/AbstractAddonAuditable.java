@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
-@Getter
-@Setter
 @MappedSuperclass
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractAddonAuditable

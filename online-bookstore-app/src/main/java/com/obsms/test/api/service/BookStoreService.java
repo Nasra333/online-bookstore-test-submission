@@ -5,7 +5,7 @@ import com.obsms.test.api.data.entity.Book;
 import com.obsms.test.api.data.entity.BookCategory;
 import com.obsms.test.api.data.entity.LendingRequest;
 import com.obsms.test.api.data.entity.Users;
-import com.obsms.test.api.model.response.ApiOperationResponse;
+import com.obsms.test.api.model.request.ApiOperationRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,12 +19,31 @@ import java.util.List;
 public interface BookStoreService {
 
     /**
+     * @param request
+     * @return {@link ResponseEntity}
+     */
+    @ApiOperation(value = "Get a single user by name",
+            notes = "Sample Test Api",
+            response = Users.class)
+    @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
+    ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
+    ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
+    ), @ApiResponse(code = 500, message = "An internal error has occurred.")})
+    @RequestMapping(
+            value = {"/getUserByName"},
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = {RequestMethod.POST}
+    )
+    ResponseEntity<Users> getUserByName(@RequestBody ApiOperationRequest<String> request);
+
+    /**
      * @param user
      * @return {@link ResponseEntity}
      */
     @ApiOperation(value = "Create/add a new user",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = Users.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -35,7 +54,26 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<Users>> addUser(@RequestBody Users user);
+    ResponseEntity<Users> addUser(@RequestBody Users user);
+
+    /**
+     * @param user
+     * @return {@link ResponseEntity}
+     */
+    @ApiOperation(value = "Edit/update a user",
+            notes = "Sample Test Api",
+            response = Users.class)
+    @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
+    ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
+    ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
+    ), @ApiResponse(code = 500, message = "An internal error has occurred.")})
+    @RequestMapping(
+            value = {"/editUser"},
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = {RequestMethod.POST}
+    )
+    ResponseEntity<Users> editUser(@RequestBody Users user);
 
     /**
      * @return {@link ResponseEntity}
@@ -79,7 +117,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Create/add a new category",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = BookCategory.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -90,7 +128,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<BookCategory>> addCategory(@RequestBody BookCategory bookCategory);
+    ResponseEntity<BookCategory> addCategory(@RequestBody BookCategory bookCategory);
 
     /**
      * @param bookCategory
@@ -98,7 +136,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Edit/update category",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = BookCategory.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -109,7 +147,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<BookCategory>> editCategory(@RequestBody BookCategory bookCategory);
+    ResponseEntity<BookCategory> editCategory(@RequestBody BookCategory bookCategory);
 
     /**
      * @param bookCategory
@@ -117,7 +155,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Re-activate category",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = BookCategory.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -128,7 +166,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<BookCategory>> activateCategory(@RequestBody BookCategory bookCategory);
+    ResponseEntity<BookCategory> activateCategory(@RequestBody BookCategory bookCategory);
 
     /**
      * @param bookCategory
@@ -136,7 +174,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Delete/Deactivate category",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = BookCategory.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -147,7 +185,26 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<BookCategory>> removeCategory(@RequestBody BookCategory bookCategory);
+    ResponseEntity<BookCategory> removeCategory(@RequestBody BookCategory bookCategory);
+
+    /**
+     * @param request
+     * @return {@link ResponseEntity}
+     */
+    @ApiOperation(value = "Get a single category by name",
+            notes = "Sample Test Api",
+            response = BookCategory.class)
+    @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
+    ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
+    ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
+    ), @ApiResponse(code = 500, message = "An internal error has occurred.")})
+    @RequestMapping(
+            value = {"/getCategoryByName"},
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = {RequestMethod.POST}
+    )
+    ResponseEntity<BookCategory> getCategoryByName(@RequestBody ApiOperationRequest<String> request);
 
     /**
      * @return {@link ResponseEntity}
@@ -191,7 +248,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Create/add a new book",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = Book.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -202,7 +259,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<Book>> addBook(@RequestBody Book book);
+    ResponseEntity<Book> addBook(@RequestBody Book book);
 
     /**
      * @param books
@@ -210,7 +267,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Create/add a list of new book",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = Book.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -221,7 +278,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<List<Book>>> addBooks(@RequestBody List<Book> books);
+    ResponseEntity<List<Book>> addBooks(@RequestBody List<Book> books);
 
     /**
      * @param book
@@ -229,7 +286,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Edit/update book",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = Book.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -240,7 +297,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<Book>> editBook(@RequestBody Book book);
+    ResponseEntity<Book> editBook(@RequestBody Book book);
 
     /**
      * @param book
@@ -248,7 +305,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Delete/Deactivate book",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = Book.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -259,7 +316,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<Book>> removeBook(@RequestBody Book book);
+    ResponseEntity<Book> removeBook(@RequestBody Book book);
 
     /**
      * @param book
@@ -267,7 +324,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Re-activate book",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = Book.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -278,7 +335,26 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<Book>> activateBook(@RequestBody Book book);
+        ResponseEntity<Book> activateBook(@RequestBody Book book);
+
+        /**
+         * @param request
+         * @return {@link ResponseEntity}
+         */
+        @ApiOperation(value = "Get a single book by name",
+                notes = "Sample Test Api",
+                response = Book.class)
+        @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
+        ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
+        ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
+        ), @ApiResponse(code = 500, message = "An internal error has occurred.")})
+        @RequestMapping(
+                value = {"/getBookByName"},
+                produces = {"application/json"},
+                consumes = {"application/json"},
+                method = {RequestMethod.POST}
+        )
+        ResponseEntity<Book> getBookByName(@RequestBody ApiOperationRequest<String> request);
 
     /**
      * @return {@link ResponseEntity}
@@ -340,7 +416,7 @@ public interface BookStoreService {
      */
     @ApiOperation(value = "Create a new book borrowing order request",
             notes = "Sample Test Api",
-            response = ApiOperationResponse.class)
+            response = LendingRequest.class)
     @ApiResponses({@ApiResponse(code = 200, message = "The response was successfully processed."
     ), @ApiResponse(code = 400, message = "Bad request - credentials were not passed"
     ), @ApiResponse(code = 401, message = "Unauthorized request - the authentication failed"
@@ -351,7 +427,7 @@ public interface BookStoreService {
             consumes = {"application/json"},
             method = {RequestMethod.POST}
     )
-    ResponseEntity<ApiOperationResponse<LendingRequest>> onlineBookRequest(@RequestBody LendingRequest request);
+    ResponseEntity<LendingRequest> onlineBookRequest(@RequestBody LendingRequest request);
 
     /**
      * @return {@link ResponseEntity}
